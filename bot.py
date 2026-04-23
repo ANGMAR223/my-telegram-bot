@@ -43,7 +43,6 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    await bot.delete_webhook()
     await bot.session.close()
     logger.info("Приложение остановлено.")
 
