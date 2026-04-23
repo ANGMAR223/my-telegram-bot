@@ -4,3 +4,5 @@ __pycache__/
 *.log
 *.code-workspace
 *.env
+run_polling.py
+data.json
