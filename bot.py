@@ -12,6 +12,8 @@ import uvicorn
 from handlers.start import router as router_start
 from handlers.movies import router as router_movies
 
+from config import BOT_TOKEN
+
 load_dotenv()
 
 logging.basicConfig(
@@ -19,9 +21,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-TOKEN = os.getenv("BOT_TOKEN")
-
-bot = Bot(token=TOKEN)
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 
