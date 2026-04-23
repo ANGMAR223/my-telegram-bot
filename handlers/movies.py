@@ -43,17 +43,20 @@ async def handle_movies(message: Message, state: FSMContext):
 
 @router.callback_query(F.data == "info")
 async def info_callback(callback: CallbackQuery, state: FSMContext):
-    await show_film_deteil(callback, state)
     await callback.answer()
+    await show_film_deteil(callback, state)
+    
 
 
 @router.callback_query(F.data == "next")
 async def next_callback(callback: CallbackQuery, state: FSMContext):
-    await show_next_film(callback, state)
     await callback.answer()
+    await show_next_film(callback, state)
+    
 
 
 @router.callback_query(F.data == "back")
 async def back_callback(callback: CallbackQuery, state: FSMContext):
-    await show_back_film(callback, state)
     await callback.answer()
+    await show_back_film(callback, state)
+    
