@@ -37,7 +37,7 @@ async def lifespan(app: FastAPI):
         logger.info(f"Регистрируем вебхук: {render_url}")
         webhook_url = f"{render_url}/webhook"
         logger.info(f"Установка вебхука: {webhook_url}")
-        await bot.set_webhook(webhook_url)
+        await bot.set_webhook(webhook_url, allowed_updates=['message', 'callback_query'])
     else:
         logger.warning("RENDER_EXTERNAL_URL не установлен. Бот будет работать в режиме polling.")
 
