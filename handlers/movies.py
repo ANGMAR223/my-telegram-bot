@@ -21,6 +21,7 @@ router = Router()
 
 @router.message(Command("movies"))
 async def handle_movies(message: Message, state: FSMContext):
+    await state.clear()
     await state.set_state(MovieState.waiting_for_movie_selection)
     logger.info(f"Пользователь {message.from_user.id} запросил топ фильмов.")
     await message.answer("Получаю список топ фильмов...")
