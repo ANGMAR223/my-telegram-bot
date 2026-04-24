@@ -6,3 +6,5 @@ __pycache__/
 *.env
 run_polling.py
 data.json
+set_webhook.py
+delete_webhook.py

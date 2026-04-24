@@ -1,7 +1,9 @@
 import logging
 import os
 from aiogram import Bot, Dispatcher
-from aiogram.types import Update
+from aiogram.types import Update, CallbackQuery
+import traceback
+from aiogram.exceptions import TelegramBadRequest
 
 from dotenv import load_dotenv
 
@@ -37,7 +39,7 @@ async def lifespan(app: FastAPI):
         logger.info(f"Регистрируем вебхук: {render_url}")
         webhook_url = f"{render_url}/webhook"
         logger.info(f"Установка вебхука: {webhook_url}")
-        await bot.set_webhook(webhook_url, allowed_updates=['message', 'callback_query'])
+        await bot.set_webhook(webhook_url, allowed_updates=["message", "callback_query"])
     else:
         logger.warning("RENDER_EXTERNAL_URL не установлен. Бот будет работать в режиме polling.")
 
@@ -48,6 +50,27 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+@dp.errors()
+async def callback_error_handler(event, **kwargs):
+    """
+    Перехватывает ВСЕ ошибки, возникающие в callback-обработчиках.
+    Логирует их и пытается ответить на callback, чтобы убрать "часики".
+    """
+    error = event.exception
+    update = event.update
+
+    logger.error(f"Ошибка при обработке обновления: {error}")
+    logger.error(traceback.format_exc())
+
+    if update and update.callback_query:
+        try:
+            await update.callback_query.answer()
+        except Exception as e:
+            logger.warning(f"Не удалось ответить на callback: {e}")
+            
+    return True
 
 
 @app.post("/webhook")
